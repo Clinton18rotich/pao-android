@@ -22,15 +22,31 @@ fun PracticeScreen() {
 
     Column(modifier = Modifier.fillMaxSize().background(DarkBg).padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text("🧠 Practice Mode", color = Orange, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-        Text("Link the 3 Numbers into a Story", color = LightGrey, fontSize = 14.sp)
+        Text("Link the Person, Action, and Object", color = LightGrey, fontSize = 14.sp)
         Spacer(Modifier.height(24.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            numbers.forEach { num ->
-                Card(modifier = Modifier.weight(1f).height(160.dp), colors = CardDefaults.cardColors(containerColor = DarkSurface)) {
+            numbers.forEachIndexed { index, num ->
+                Card(modifier = Modifier.weight(1f).height(180.dp), colors = CardDefaults.cardColors(containerColor = DarkSurface)) {
                     Column(modifier = Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Text(num.number, color = Orange, fontSize = 32.sp, fontWeight = FontWeight.Bold)
-                        Text(num.person, color = White, fontSize = 12.sp, maxLines = 2)
+                        Spacer(Modifier.height(4.dp))
+                        
+                        // Show the specific PAO element based on position
+                        when (index) {
+                            0 -> {
+                                Text("PERSON", color = Green, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(num.person, color = White, fontSize = 12.sp, maxLines = 2, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            }
+                            1 -> {
+                                Text("ACTION", color = Green, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(num.action, color = White, fontSize = 12.sp, maxLines = 2, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            }
+                            2 -> {
+                                Text("OBJECT", color = Green, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(num.objectName, color = White, fontSize = 12.sp, maxLines = 2, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            }
+                        }
                     }
                 }
             }
@@ -44,15 +60,23 @@ fun PracticeScreen() {
 
         AnimatedVisibility(visible = revealed, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
             Column(modifier = Modifier.fillMaxWidth().background(DarkSurface, RoundedCornerShape(10.dp)).padding(16.dp)) {
-                Text("Link them: ${numbers[0].person} + ${numbers[1].person} + ${numbers[2].person}", color = White, fontWeight = FontWeight.Bold)
+                Text("The Story:", color = Orange, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(8.dp))
-                Text("Imagine: ${numbers[0].person} is ${numbers[0].action} a ${numbers[0].objectName}, and ${numbers[1].person} is doing something with ${numbers[2].objectName}.", color = Green, fontSize = 14.sp)
+                Text(
+                    "Imagine ${numbers[0].person} is ${numbers[1].action} a ${numbers[2].objectName}.", 
+                    color = White, fontSize = 18.sp, fontWeight = FontWeight.Medium
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "e.g., ${numbers[0].person} grabs a ${numbers[2].objectName} and starts ${numbers[1].action} it!", 
+                    color = LightGrey, fontSize = 14.sp, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                )
             }
         }
 
         Spacer(Modifier.height(24.dp))
         Button(onClick = { numbers = List(3) { PAO_DATA.random() }; revealed = false }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF555555))) {
-            Text("🎲 Shuffle New Numbers")
+            Text("🎲 Shuffle New PAO")
         }
     }
 }
