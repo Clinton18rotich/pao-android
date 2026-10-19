@@ -55,7 +55,7 @@ fun PAONavGraph() {
         }
     ) { padding ->
         NavHost(navController = navController, startDestination = Screen.Teach.route, modifier = Modifier.padding(padding)) {
-            composable(Screen.Teach.route) { TeachScreen() }
+            composable(Screen.Teach.route) { TeachScreen(onPracticeClick = { navController.navigate(Screen.Practice.route) }) }
             composable(Screen.Flashcards.route) { FlashcardsScreen() }
             composable(Screen.Practice.route) { PracticeScreen() }
             composable(Screen.Timer.route) { FullDeckScreen() }
